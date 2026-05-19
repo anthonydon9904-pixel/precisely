@@ -25,14 +25,10 @@ export async function POST(req: NextRequest) {
     if (resumeFile && resumeFile.size > 0) {
       try {
         const buffer = Buffer.from(await resumeFile.arrayBuffer());
-        if (resumeFile.name.toLowerCase().endsWith('.pdf')) {
-          // eslint-disable-next-line @typescript-eslint/no-require-imports
-          const pdfParse = require('pdf-parse');
-          const parsed = await pdfParse(buffer);
-          resumeText = parsed.text;
-        } else {
+        if (!resumeFile.name.toLowerCase().endsWith('.pdf')) {
           resumeText = buffer.toString('utf-8');
         }
+        // PDF text extraction skipped — score is based on answers
       } catch {
         resumeText = '';
       }
