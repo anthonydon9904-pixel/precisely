@@ -16,7 +16,7 @@ export async function scoreApplication(
   answers: Record<string, string>,
   resumeText: string
 ): Promise<ScoreResult> {
-  const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
+  const model = genAI.getGenerativeModel({ model: 'gemini-2.0-flash' });
 
   const questionsAndAnswers = questions.map(q =>
     `Q: ${q.text}\nA: ${answers[q.id] || 'No answer provided'}`
