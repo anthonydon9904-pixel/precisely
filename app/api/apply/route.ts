@@ -34,13 +34,24 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    const { score, recommendation, reasoning } = await scoreApplication(
-      job.title,
-      job.description,
-      job.questions,
-      answers,
-      resumeText
-    );
+    let score = 5;
+    let recommendation: 'Advance' | 'Maybe' | 'Pass' = 'Maybe';
+    let reasoning = 'AI scoring unavailable — please review manually.';
+
+    try {
+      const result = await scoreApplication(
+        job.title,
+        job.description,
+        job.questions,
+        answers,
+        resumeText
+      );
+      score = result.score;
+      recommendation = result.recommendation;
+      reasoning = result.reasoning;
+    } catch (aiErr) {
+      console.error('AI scoring failed, using defaults:', aiErr);
+    }
 
     const application = createApplication({
       jobId,
